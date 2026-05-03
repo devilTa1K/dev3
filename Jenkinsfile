@@ -31,7 +31,7 @@ pipeline {
             steps {
                 echo "Building Docker images for ${COMPOSE_PROJECT_NAME} environment"
                 bat '''
-                    docker-compose build
+                    docker compose build
                 '''
             }
         }
