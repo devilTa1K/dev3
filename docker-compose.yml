@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./server
+    container_name: mern_backend
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - MONGO_URI=mongodb://mongodb:27017/taskapp
+      - JWT_SECRET=supersecretjwt
+    depends_on:
+      - mongodb
+    networks:
+      - mern_network
+
+  frontend:
+    build: ./client
+    container_name: mern_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - mern_network
+
+  mongodb:
+    image: mongo:latest
+    container_name: mern_mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - mern_network
+
+volumes:
+  mongo_data:
+
+networks:
+  mern_network:
+    driver: bridge
